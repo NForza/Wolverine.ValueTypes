@@ -1,6 +1,7 @@
 using System.Net;
 using System.Net.Http.Json;
 using System.Text.Json;
+using Shouldly;
 using Xunit;
 
 namespace NForza.Wolverine.ValueTypes.Integration.Tests;
@@ -26,10 +27,10 @@ public class CustomerApiTests : IClassFixture<SampleApiFixture>
         var id = json.GetProperty("id").GetString();
         var name = json.GetProperty("name").GetString();
 
-        Assert.NotNull(id);
-        Assert.True(Guid.TryParse(id, out var guid));
-        Assert.NotEqual(Guid.Empty, guid);
-        Assert.Equal("Alice", name);
+        id.ShouldNotBeNull();
+        Guid.TryParse(id, out var guid).ShouldBeTrue();
+        guid.ShouldNotBe(Guid.Empty);
+        name.ShouldBe("Alice");
     }
 
     [Fact]
@@ -49,8 +50,8 @@ public class CustomerApiTests : IClassFixture<SampleApiFixture>
         getResponse.EnsureSuccessStatusCode();
 
         var json = await getResponse.Content.ReadFromJsonAsync<JsonElement>();
-        Assert.Equal(id, json.GetProperty("id").GetString());
-        Assert.Equal("Bob", json.GetProperty("name").GetString());
+        json.GetProperty("id").GetString().ShouldBe(id);
+        json.GetProperty("name").GetString().ShouldBe("Bob");
     }
 
     [Fact]
@@ -58,10 +59,8 @@ public class CustomerApiTests : IClassFixture<SampleApiFixture>
     {
         var response = await client.GetAsync("/api/customers/not-a-guid");
 
-        Assert.True(
-            response.StatusCode == HttpStatusCode.NotFound ||
-            response.StatusCode == HttpStatusCode.BadRequest,
-            $"Expected 404 or 400, got {response.StatusCode}");
+        new[] { HttpStatusCode.NotFound, HttpStatusCode.BadRequest }
+            .ShouldContain(response.StatusCode);
     }
 
     [Fact]
@@ -70,6 +69,6 @@ public class CustomerApiTests : IClassFixture<SampleApiFixture>
         var response = await client.GetAsync($"/api/customers/{Guid.NewGuid()}");
 
         // Wolverine returns 404 for null return values
-        Assert.Equal(HttpStatusCode.NotFound, response.StatusCode);
+        response.StatusCode.ShouldBe(HttpStatusCode.NotFound);
     }
 }

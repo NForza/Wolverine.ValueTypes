@@ -1,4 +1,5 @@
 using System.Linq;
+using Shouldly;
 using Xunit;
 
 namespace NForza.Wolverine.ValueTypes.Tests;
@@ -19,13 +20,13 @@ public partial record struct CustomerId;
         var (diagnostics, generated) = GeneratorTestHelper.RunGenerator(source);
 
         var recordSource = generated.FirstOrDefault(s => s.Contains("public partial record struct CustomerId"));
-        Assert.NotNull(recordSource);
-        Assert.Contains("IGuidValueType", recordSource);
-        Assert.Contains("IComparable<CustomerId>", recordSource);
-        Assert.Contains("Guid.NewGuid()", recordSource);
-        Assert.Contains("Guid.Empty", recordSource);
-        Assert.Contains("implicit operator Guid", recordSource);
-        Assert.Contains("explicit operator CustomerId", recordSource);
+        recordSource.ShouldNotBeNull();
+        recordSource.ShouldContain("IGuidValueType");
+        recordSource.ShouldContain("IComparable<CustomerId>");
+        recordSource.ShouldContain("Guid.NewGuid()");
+        recordSource.ShouldContain("Guid.Empty");
+        recordSource.ShouldContain("implicit operator Guid");
+        recordSource.ShouldContain("explicit operator CustomerId");
     }
 
     [Fact]
@@ -42,9 +43,9 @@ public partial record struct OrderId;
         var (_, generated) = GeneratorTestHelper.RunGenerator(source);
 
         var recordSource = generated.FirstOrDefault(s => s.Contains("public partial record struct OrderId"));
-        Assert.NotNull(recordSource);
-        Assert.Contains("static bool TryParse(string? s, out OrderId result)", recordSource);
-        Assert.Contains("Guid.TryParse(s, out var guid)", recordSource);
+        recordSource.ShouldNotBeNull();
+        recordSource.ShouldContain("static bool TryParse(string? s, out OrderId result)");
+        recordSource.ShouldContain("Guid.TryParse(s, out var guid)");
     }
 
     [Fact]
@@ -61,9 +62,9 @@ public partial record struct CustomerId;
         var (_, generated) = GeneratorTestHelper.RunGenerator(source);
 
         var converterSource = generated.FirstOrDefault(s => s.Contains("class CustomerIdJsonConverter"));
-        Assert.NotNull(converterSource);
-        Assert.Contains("JsonConverter<CustomerId>", converterSource);
-        Assert.Contains("Guid.TryParse", converterSource);
+        converterSource.ShouldNotBeNull();
+        converterSource.ShouldContain("JsonConverter<CustomerId>");
+        converterSource.ShouldContain("Guid.TryParse");
     }
 
     [Fact]
@@ -80,11 +81,11 @@ public partial record struct Name;
         var (_, generated) = GeneratorTestHelper.RunGenerator(source);
 
         var recordSource = generated.FirstOrDefault(s => s.Contains("public partial record struct Name(string Value)"));
-        Assert.NotNull(recordSource);
-        Assert.Contains("IStringValueType", recordSource);
-        Assert.Contains("Value.Length >= 1", recordSource);
-        Assert.Contains("Value.Length <= 50", recordSource);
-        Assert.Contains("static bool TryParse", recordSource);
+        recordSource.ShouldNotBeNull();
+        recordSource.ShouldContain("IStringValueType");
+        recordSource.ShouldContain("Value.Length >= 1");
+        recordSource.ShouldContain("Value.Length <= 50");
+        recordSource.ShouldContain("static bool TryParse");
     }
 
     [Fact]
@@ -101,8 +102,8 @@ public partial record struct PersonName;
         var (_, generated) = GeneratorTestHelper.RunGenerator(source);
 
         var recordSource = generated.FirstOrDefault(s => s.Contains("public partial record struct PersonName"));
-        Assert.NotNull(recordSource);
-        Assert.Contains("Regex.IsMatch", recordSource);
+        recordSource.ShouldNotBeNull();
+        recordSource.ShouldContain("Regex.IsMatch");
     }
 
     [Fact]
@@ -119,13 +120,13 @@ public partial record struct Amount;
         var (_, generated) = GeneratorTestHelper.RunGenerator(source);
 
         var recordSource = generated.FirstOrDefault(s => s.Contains("public partial record struct Amount(int Value)"));
-        Assert.NotNull(recordSource);
-        Assert.Contains("IIntValueType", recordSource);
-        Assert.Contains("Value >= 0", recordSource);
-        Assert.Contains("Value <= 100", recordSource);
-        Assert.Contains("operator <(", recordSource);
-        Assert.Contains("operator >(", recordSource);
-        Assert.Contains("static bool TryParse", recordSource);
+        recordSource.ShouldNotBeNull();
+        recordSource.ShouldContain("IIntValueType");
+        recordSource.ShouldContain("Value >= 0");
+        recordSource.ShouldContain("Value <= 100");
+        recordSource.ShouldContain("operator <(");
+        recordSource.ShouldContain("operator >(");
+        recordSource.ShouldContain("static bool TryParse");
     }
 
     [Fact]
@@ -142,9 +143,9 @@ public partial record struct Price;
         var (_, generated) = GeneratorTestHelper.RunGenerator(source);
 
         var recordSource = generated.FirstOrDefault(s => s.Contains("public partial record struct Price(double Value)"));
-        Assert.NotNull(recordSource);
-        Assert.Contains("IDoubleValueType", recordSource);
-        Assert.Contains("static bool TryParse", recordSource);
+        recordSource.ShouldNotBeNull();
+        recordSource.ShouldContain("IDoubleValueType");
+        recordSource.ShouldContain("static bool TryParse");
     }
 
     [Fact]
@@ -164,10 +165,10 @@ public partial record struct CustomerName;
         var (_, generated) = GeneratorTestHelper.RunGenerator(source);
 
         var extensionSource = generated.FirstOrDefault(s => s.Contains("WolverineValueTypeExtension"));
-        Assert.NotNull(extensionSource);
-        Assert.Contains("IWolverineExtension", extensionSource);
-        Assert.Contains("CustomerIdJsonConverter", extensionSource);
-        Assert.Contains("CustomerNameJsonConverter", extensionSource);
+        extensionSource.ShouldNotBeNull();
+        extensionSource.ShouldContain("IWolverineExtension");
+        extensionSource.ShouldContain("CustomerIdJsonConverter");
+        extensionSource.ShouldContain("CustomerNameJsonConverter");
     }
 
     [Fact]
@@ -182,7 +183,9 @@ public partial record struct GlobalId;
         var (_, generated) = GeneratorTestHelper.RunGenerator(source);
 
         var recordSource = generated.FirstOrDefault(s => s.Contains("public partial record struct GlobalId"));
-        Assert.NotNull(recordSource);
-        Assert.DoesNotContain("namespace", recordSource.Split(new[] { "public partial record" }, System.StringSplitOptions.None)[0].Substring(recordSource.IndexOf("using NForza") + 1));
+        recordSource.ShouldNotBeNull();
+        recordSource.Split(["public partial record"], System.StringSplitOptions.None)[0]
+            .Substring(recordSource.IndexOf("using NForza") + 1)
+            .ShouldNotContain("namespace");
     }
 }

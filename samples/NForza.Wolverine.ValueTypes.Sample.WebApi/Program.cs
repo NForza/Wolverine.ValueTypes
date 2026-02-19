@@ -1,6 +1,7 @@
 using Marten;
 using Marten.Events.Projections;
-using NForza.Wolverine.ValueTypes.Sample.WebApi.Domain;
+using NForza.Wolverine.ValueTypes.Sample.WebApi.Customers;
+using NForza.Wolverine.ValueTypes.Sample.WebApi.Orders;
 using Wolverine;
 using Wolverine.Http;
 using Wolverine.Marten;

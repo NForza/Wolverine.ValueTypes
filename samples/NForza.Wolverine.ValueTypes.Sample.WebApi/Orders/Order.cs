@@ -1,6 +1,8 @@
-using NForza.Wolverine.ValueTypes.Sample.WebApi.ValueTypes;
+using NForza.Wolverine.ValueTypes.Sample.WebApi.Customers;
+using NForza.Wolverine.ValueTypes.Sample.WebApi.Orders.Create;
+using NForza.Wolverine.ValueTypes.Sample.WebApi.Orders.Rate;
 
-namespace NForza.Wolverine.ValueTypes.Sample.WebApi.Domain;
+namespace NForza.Wolverine.ValueTypes.Sample.WebApi.Orders;
 
 public class Order
 {

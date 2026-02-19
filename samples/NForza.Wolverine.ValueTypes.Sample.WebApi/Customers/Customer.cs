@@ -1,6 +1,4 @@
-using NForza.Wolverine.ValueTypes.Sample.WebApi.ValueTypes;
-
-namespace NForza.Wolverine.ValueTypes.Sample.WebApi.Domain;
+namespace NForza.Wolverine.ValueTypes.Sample.WebApi.Customers;
 
 public class Customer
 {

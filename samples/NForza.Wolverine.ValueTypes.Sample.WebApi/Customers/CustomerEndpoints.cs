@@ -1,14 +1,8 @@
 using Marten;
-using NForza.Wolverine.ValueTypes.Sample.WebApi.Domain;
-using NForza.Wolverine.ValueTypes.Sample.WebApi.ValueTypes;
 using Wolverine.Http;
 using Wolverine.Marten;
 
-namespace NForza.Wolverine.ValueTypes.Sample.WebApi.Endpoints;
-
-public record CreateCustomerRequest(CustomerName Name);
-
-public record CustomerResponse(CustomerId Id, CustomerName Name);
+namespace NForza.Wolverine.ValueTypes.Sample.WebApi.Customers;
 
 public static class CustomerEndpoints
 {

@@ -1,6 +1,7 @@
 using System.Net;
 using System.Net.Http.Json;
 using System.Text.Json;
+using Shouldly;
 using Xunit;
 
 namespace NForza.Wolverine.ValueTypes.Integration.Tests;
@@ -40,10 +41,10 @@ public class OrderApiTests : IClassFixture<SampleApiFixture>
         var returnedCustomerId = json.GetProperty("customerId").GetString();
         var amount = json.GetProperty("amount").GetInt32();
 
-        Assert.NotNull(orderId);
-        Assert.True(Guid.TryParse(orderId, out _));
-        Assert.Equal(customerId, returnedCustomerId);
-        Assert.Equal(500, amount);
+        orderId.ShouldNotBeNull();
+        Guid.TryParse(orderId, out _).ShouldBeTrue();
+        returnedCustomerId.ShouldBe(customerId);
+        amount.ShouldBe(500);
     }
 
     [Fact]
@@ -66,9 +67,9 @@ public class OrderApiTests : IClassFixture<SampleApiFixture>
         getResponse.EnsureSuccessStatusCode();
 
         var json = await getResponse.Content.ReadFromJsonAsync<JsonElement>();
-        Assert.Equal(orderId, json.GetProperty("id").GetString());
-        Assert.Equal(customerId, json.GetProperty("customerId").GetString());
-        Assert.Equal(250, json.GetProperty("amount").GetInt32());
+        json.GetProperty("id").GetString().ShouldBe(orderId);
+        json.GetProperty("customerId").GetString().ShouldBe(customerId);
+        json.GetProperty("amount").GetInt32().ShouldBe(250);
     }
 
     [Fact]
@@ -76,7 +77,7 @@ public class OrderApiTests : IClassFixture<SampleApiFixture>
     {
         var response = await client.GetAsync($"/api/orders/{Guid.NewGuid()}");
 
-        Assert.Equal(HttpStatusCode.NotFound, response.StatusCode);
+        response.StatusCode.ShouldBe(HttpStatusCode.NotFound);
     }
 
     [Fact]
@@ -102,7 +103,7 @@ public class OrderApiTests : IClassFixture<SampleApiFixture>
         rateResponse.EnsureSuccessStatusCode();
 
         var json = await rateResponse.Content.ReadFromJsonAsync<JsonElement>();
-        Assert.Equal(4.5, json.GetProperty("rating").GetDouble());
+        json.GetProperty("rating").GetDouble().ShouldBe(4.5);
     }
 
     [Fact]
@@ -125,15 +126,15 @@ public class OrderApiTests : IClassFixture<SampleApiFixture>
         var root = json.RootElement;
 
         // CustomerId should serialize as a GUID string
-        Assert.Equal(JsonValueKind.String, root.GetProperty("customerId").ValueKind);
-        Assert.True(Guid.TryParse(root.GetProperty("customerId").GetString(), out _));
+        root.GetProperty("customerId").ValueKind.ShouldBe(JsonValueKind.String);
+        Guid.TryParse(root.GetProperty("customerId").GetString(), out _).ShouldBeTrue();
 
         // OrderId should serialize as a GUID string
-        Assert.Equal(JsonValueKind.String, root.GetProperty("id").ValueKind);
-        Assert.True(Guid.TryParse(root.GetProperty("id").GetString(), out _));
+        root.GetProperty("id").ValueKind.ShouldBe(JsonValueKind.String);
+        Guid.TryParse(root.GetProperty("id").GetString(), out _).ShouldBeTrue();
 
         // Amount should serialize as a number
-        Assert.Equal(JsonValueKind.Number, root.GetProperty("amount").ValueKind);
-        Assert.Equal(9999, root.GetProperty("amount").GetInt32());
+        root.GetProperty("amount").ValueKind.ShouldBe(JsonValueKind.Number);
+        root.GetProperty("amount").GetInt32().ShouldBe(9999);
     }
 }
