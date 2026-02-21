@@ -8,6 +8,7 @@ internal static class WolverineExtensionTemplates
     public static string Generate(ImmutableArray<ValueTypeInfo> valueTypes)
     {
         var sb = new StringBuilder();
+        sb.AppendLine("#nullable enable");
         sb.AppendLine("using System.Text.Json;");
         sb.AppendLine("using Wolverine;");
         sb.AppendLine();
