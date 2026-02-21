@@ -10,6 +10,8 @@
     <Description>Attributes and interfaces for Wolverine ValueTypes source generator</Description>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
     <PackageTags>wolverine;value-types;source-generator</PackageTags>
+    <RepositoryUrl>https://github.com/NForza/Wolverine.ValueTypes</RepositoryUrl>
+    <RepositoryType>git</RepositoryType>
   </PropertyGroup>
 
 </Project>
