@@ -4,7 +4,8 @@ namespace NForza.Wolverine.ValueTypes.Generators.CodeGeneration;
 
 internal static class GuidValueTemplates
 {
-    private const string RecordStructTemplate = @"using System;
+    private const string RecordStructTemplate = @"#nullable enable
+using System;
 using System.Diagnostics;
 using System.Text.Json.Serialization;
 using NForza.Wolverine.ValueTypes;
@@ -22,7 +23,7 @@ public partial record struct {{Name}}(Guid Value) : IGuidValueType, IComparable<
     public override string ToString() => Value.ToString();
     public bool IsValid() => !Value.Equals(Guid.Empty);
     public int CompareTo({{Name}} other) => Value.CompareTo(other.Value);
-    public int CompareTo(object obj) => obj is {{Name}} other ? CompareTo(other) : throw new ArgumentException(""Object is not a {{Name}}"");
+    public int CompareTo(object? obj) => obj is {{Name}} other ? CompareTo(other) : throw new ArgumentException(""Object is not a {{Name}}"");
 
     public static bool TryParse(string? s, out {{Name}} result)
     {

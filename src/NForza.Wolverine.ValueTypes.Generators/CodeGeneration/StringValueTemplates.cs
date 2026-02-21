@@ -5,7 +5,8 @@ namespace NForza.Wolverine.ValueTypes.Generators.CodeGeneration;
 
 internal static class StringValueTemplates
 {
-    private const string RecordStructTemplate = @"using System;
+    private const string RecordStructTemplate = @"#nullable enable
+using System;
 using System.Diagnostics;
 using System.Text.Json.Serialization;
 using NForza.Wolverine.ValueTypes;
@@ -20,7 +21,7 @@ public partial record struct {{Name}}(string Value) : IStringValueType
     public static implicit operator string({{Name}} typedId) => typedId.Value;
     public static explicit operator {{Name}}(string value) => new(value);
     public bool IsValid() => !string.IsNullOrEmpty(Value){{ValidationSuffix}};
-    public override string ToString() => Value?.ToString();
+    public override string ToString() => Value ?? string.Empty;
 
     public static bool TryParse(string? s, out {{Name}} result)
     {

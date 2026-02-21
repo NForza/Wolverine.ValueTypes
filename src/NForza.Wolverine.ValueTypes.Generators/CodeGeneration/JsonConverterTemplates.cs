@@ -4,7 +4,8 @@ namespace NForza.Wolverine.ValueTypes.Generators.CodeGeneration;
 
 internal static class JsonConverterTemplates
 {
-    private const string GuidTemplate = @"using System;
+    private const string GuidTemplate = @"#nullable enable
+using System;
 using System.Text.Json;
 using System.Text.Json.Serialization;
 
@@ -32,7 +33,8 @@ public class {{Name}}JsonConverter : JsonConverter<{{Name}}>
     }
 }";
 
-    private const string StringTemplate = @"using System;
+    private const string StringTemplate = @"#nullable enable
+using System;
 using System.Text.Json;
 using System.Text.Json.Serialization;
 
@@ -48,7 +50,7 @@ public class {{Name}}JsonConverter : JsonConverter<{{Name}}>
             throw new JsonException($""Expected string, found {reader.TokenType}."");
 
         string? raw = reader.GetString();
-        return new {{Name}}(raw);
+        return new {{Name}}(raw ?? string.Empty);
     }
 
     public override void Write(Utf8JsonWriter writer, {{Name}} value, JsonSerializerOptions options)
@@ -57,7 +59,8 @@ public class {{Name}}JsonConverter : JsonConverter<{{Name}}>
     }
 }";
 
-    private const string IntTemplate = @"using System;
+    private const string IntTemplate = @"#nullable enable
+using System;
 using System.Text.Json;
 using System.Text.Json.Serialization;
 
@@ -96,7 +99,8 @@ public class {{Name}}JsonConverter : JsonConverter<{{Name}}>
     }
 }";
 
-    private const string DoubleTemplate = @"using System;
+    private const string DoubleTemplate = @"#nullable enable
+using System;
 using System.Text.Json;
 using System.Text.Json.Serialization;
 

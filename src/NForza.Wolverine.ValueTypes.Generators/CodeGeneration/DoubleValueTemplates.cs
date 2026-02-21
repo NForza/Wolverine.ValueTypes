@@ -5,7 +5,8 @@ namespace NForza.Wolverine.ValueTypes.Generators.CodeGeneration;
 
 internal static class DoubleValueTemplates
 {
-    private const string RecordStructTemplate = @"using System;
+    private const string RecordStructTemplate = @"#nullable enable
+using System;
 using System.Diagnostics;
 using System.Text.Json.Serialization;
 using NForza.Wolverine.ValueTypes;
@@ -15,7 +16,7 @@ using NForza.Wolverine.ValueTypes;
 [DebuggerDisplay(""{Value}"")]
 public partial record struct {{Name}}(double Value) : IDoubleValueType, IComparable, IComparable<{{Name}}>, IEquatable<{{Name}}>
 {
-    public int CompareTo(object other) => other is {{Name}} ? Value.CompareTo((({{Name}})other).Value) : -1;
+    public int CompareTo(object? other) => other is {{Name}} ? Value.CompareTo((({{Name}})other).Value) : -1;
     public int CompareTo({{Name}} other) => Value.CompareTo(other.Value);
     public static bool operator <({{Name}} left, {{Name}} right) => left.CompareTo(right) < 0;
     public static bool operator <=({{Name}} left, {{Name}} right) => left.CompareTo(right) <= 0;
