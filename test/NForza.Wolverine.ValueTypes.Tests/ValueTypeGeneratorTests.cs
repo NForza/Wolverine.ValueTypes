@@ -18,6 +18,7 @@ namespace TestApp;
 public partial record struct CustomerId;
 ";
         var (diagnostics, generated) = GeneratorTestHelper.RunGenerator(source);
+        diagnostics.ShouldBeEmpty();
 
         var recordSource = generated.FirstOrDefault(s => s.Contains("public partial record struct CustomerId"));
         recordSource.ShouldNotBeNull();
@@ -40,7 +41,8 @@ namespace TestApp;
 [GuidValue]
 public partial record struct OrderId;
 ";
-        var (_, generated) = GeneratorTestHelper.RunGenerator(source);
+        var (diagnostics, generated) = GeneratorTestHelper.RunGenerator(source);
+        diagnostics.ShouldBeEmpty();
 
         var recordSource = generated.FirstOrDefault(s => s.Contains("public partial record struct OrderId"));
         recordSource.ShouldNotBeNull();
@@ -59,7 +61,8 @@ namespace TestApp;
 [GuidValue]
 public partial record struct CustomerId;
 ";
-        var (_, generated) = GeneratorTestHelper.RunGenerator(source);
+        var (diagnostics, generated) = GeneratorTestHelper.RunGenerator(source);
+        diagnostics.ShouldBeEmpty();
 
         var converterSource = generated.FirstOrDefault(s => s.Contains("class CustomerIdJsonConverter"));
         converterSource.ShouldNotBeNull();
@@ -78,7 +81,8 @@ namespace TestApp;
 [StringValue(1, 50)]
 public partial record struct Name;
 ";
-        var (_, generated) = GeneratorTestHelper.RunGenerator(source);
+        var (diagnostics, generated) = GeneratorTestHelper.RunGenerator(source);
+        diagnostics.ShouldBeEmpty();
 
         var recordSource = generated.FirstOrDefault(s => s.Contains("public partial record struct Name(string Value)"));
         recordSource.ShouldNotBeNull();
@@ -99,7 +103,8 @@ namespace TestApp;
 [StringValue(1, 50, ""^[A-Za-z ]*$"")]
 public partial record struct PersonName;
 ";
-        var (_, generated) = GeneratorTestHelper.RunGenerator(source);
+        var (diagnostics, generated) = GeneratorTestHelper.RunGenerator(source);
+        diagnostics.ShouldBeEmpty();
 
         var recordSource = generated.FirstOrDefault(s => s.Contains("public partial record struct PersonName"));
         recordSource.ShouldNotBeNull();
@@ -117,7 +122,8 @@ namespace TestApp;
 [IntValue(0, 100)]
 public partial record struct Amount;
 ";
-        var (_, generated) = GeneratorTestHelper.RunGenerator(source);
+        var (diagnostics, generated) = GeneratorTestHelper.RunGenerator(source);
+        diagnostics.ShouldBeEmpty();
 
         var recordSource = generated.FirstOrDefault(s => s.Contains("public partial record struct Amount(int Value)"));
         recordSource.ShouldNotBeNull();
@@ -140,7 +146,8 @@ namespace TestApp;
 [DoubleValue(0.0, 99.9)]
 public partial record struct Price;
 ";
-        var (_, generated) = GeneratorTestHelper.RunGenerator(source);
+        var (diagnostics, generated) = GeneratorTestHelper.RunGenerator(source);
+        diagnostics.ShouldBeEmpty();
 
         var recordSource = generated.FirstOrDefault(s => s.Contains("public partial record struct Price(double Value)"));
         recordSource.ShouldNotBeNull();
@@ -162,7 +169,8 @@ public partial record struct CustomerId;
 [StringValue(1, 100)]
 public partial record struct CustomerName;
 ";
-        var (_, generated) = GeneratorTestHelper.RunGenerator(source);
+        var (diagnostics, generated) = GeneratorTestHelper.RunGenerator(source);
+        diagnostics.ShouldBeEmpty();
 
         var extensionSource = generated.FirstOrDefault(s => s.Contains("WolverineValueTypeExtension"));
         extensionSource.ShouldNotBeNull();
@@ -180,7 +188,8 @@ using NForza.Wolverine.ValueTypes;
 [GuidValue]
 public partial record struct GlobalId;
 ";
-        var (_, generated) = GeneratorTestHelper.RunGenerator(source);
+        var (diagnostics, generated) = GeneratorTestHelper.RunGenerator(source);
+        diagnostics.ShouldBeEmpty();
 
         var recordSource = generated.FirstOrDefault(s => s.Contains("public partial record struct GlobalId"));
         recordSource.ShouldNotBeNull();

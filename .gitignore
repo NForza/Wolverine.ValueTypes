@@ -9,6 +9,7 @@ obj/
 
 ## NuGet
 *.nupkg
+nupkg/
 project.lock.json
 
 ## Build

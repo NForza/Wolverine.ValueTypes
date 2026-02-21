@@ -9,24 +9,34 @@
     <IsPackable>true</IsPackable>
     <IncludeBuildOutput>false</IncludeBuildOutput>
     <CopyLocalLockFileAssemblies>true</CopyLocalLockFileAssemblies>
+    <PackageId>NForza.Wolverine.ValueTypes</PackageId>
     <Authors>NForza</Authors>
-    <PackageId>NForza.Wolverine.ValueTypes.Generators</PackageId>
-    <Description>Source generator for Wolverine ValueTypes</Description>
+    <Description>Source generator for strongly-typed value type wrappers for Wolverine and Marten. Eliminates primitive obsession with a single attribute.</Description>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
-    <PackageTags>wolverine;value-types;source-generator</PackageTags>
+    <PackageTags>wolverine;marten;value-types;source-generator;ddd;strongly-typed-id</PackageTags>
+    <PackageReadmeFile>README.md</PackageReadmeFile>
+    <RepositoryUrl>https://github.com/NForza/Wolverine.ValueTypes</RepositoryUrl>
+    <RepositoryType>git</RepositoryType>
+    <PackageProjectUrl>https://github.com/NForza/Wolverine.ValueTypes</PackageProjectUrl>
   </PropertyGroup>
 
   <ItemGroup>
-    <Content Include="$(OutputPath)$(AssemblyName).dll" Pack="true" PackagePath="analyzers/dotnet/cs/" />
+    <None Include="$(OutputPath)$(AssemblyName).dll" Pack="true" PackagePath="analyzers/dotnet/cs/" />
+    <None Include="$(OutputPath)NForza.Wolverine.ValueTypes.Abstractions.dll" Pack="true" PackagePath="analyzers/dotnet/cs/" />
+    <None Include="$(OutputPath)NForza.Wolverine.ValueTypes.Abstractions.dll" Pack="true" PackagePath="lib/netstandard2.0/" />
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="Microsoft.CodeAnalysis.CSharp" Version="5.0.0" />
-    <PackageReference Include="Microsoft.CodeAnalysis.Common" Version="5.0.0" />
+    <None Include="..\..\README.md" Pack="true" PackagePath="" />
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\NForza.Wolverine.ValueTypes.Abstractions\NForza.Wolverine.ValueTypes.Abstractions.csproj" />
+    <PackageReference Include="Microsoft.CodeAnalysis.CSharp" Version="5.0.0" PrivateAssets="all" />
+    <PackageReference Include="Microsoft.CodeAnalysis.Common" Version="5.0.0" PrivateAssets="all" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\NForza.Wolverine.ValueTypes.Abstractions\NForza.Wolverine.ValueTypes.Abstractions.csproj" PrivateAssets="all" />
   </ItemGroup>
 
 </Project>
