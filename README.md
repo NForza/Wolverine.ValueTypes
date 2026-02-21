@@ -115,7 +115,7 @@ Once per project, it also generates:
 
 ## Marten Compatibility
 
-Value types work as Marten aggregate IDs. When using value type IDs with Marten event sourcing, use `FetchForWriting<T>()` instead of the `[Aggregate]` attribute to avoid code generation conflicts:
+Guid value types work as Marten aggregate IDs. When using them with Marten event sourcing, use `FetchForWriting<T>()` instead of the `[Aggregate]` attribute to avoid code generation conflicts:
 
 ```csharp
 [WolverinePost("/api/orders/{orderId}/rate")]
